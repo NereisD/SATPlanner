@@ -223,63 +223,46 @@ public class BAPT extends AbstractPlanner {
     public Plan solve(final Problem problem) {
 
         final Plan plan = new SequentialPlan();
-        // We get the initial state from the planning problem
         final State init = new State(problem.getInitialState());
-        // We get the goal from the planning problem
         final State goal = new State(problem.getGoal());
-        // Nothing to do, goal is already satisfied by the initial state
         if (init.satisfy(problem.getGoal())) {
             return plan;
         }
-        // Otherwise, we start the search
         else {
 
             List<int[]> clauses = null;
-            // SAT solver timeout
             final int timeout = 1000;
-            // SAT solver max number of var
             int MAXVAR = 50000;
-            // SAT solver max number of clauses
             int NBCLAUSES = 100000;
-
-
-
+            
             int max_step = 10000;
-            //On a pas eu le temps d optimiser pour avoir une étape initial cohérente avec le probleme donc on commence a 1
             int current_step = 1;
             Encoder encoder = new Encoder(problem, current_step);
 
 
             IProblem ip = null;
             boolean solutionFound = false;
-            //boucle tant que le sat solver ne trouve pas de solution ou que l'on atteint pas une limite (nb clauses ou temps)
             try {
                 while ((current_step <= max_step) && !solutionFound) {
                     try {
-                        //Initialize solver
                         ISolver solver = SolverFactory.newDefault();
                         solver.setTimeout(60);
                         solver.newVar(MAXVAR);
                         solver.setExpectedNumberOfClauses(NBCLAUSES);
 
-                        //on genere les clauses a l'etape +1
                         clauses = encoder.next();
-                        //ajout des clauses au solver
                         for (int[] clause : clauses) {
                             solver.addClause(new VecInt(clause));
                         }
                         ip = solver;
-                        //si c'est solvable on s'arrete
                         if (ip.isSatisfiable()) {
                             solutionFound = true;
                         }
-                        //si ce n'est pas solvable a l'etape n on boucle pour tester a n+1
                         current_step++;
                     } catch (ContradictionException e) {
                         current_step++;
                     }
                 }
-                //si on atteint la borne temporelle on s'arrete
             } catch (TimeoutException e) {
                 System.out.println("Timeout! No solution found!");
                 System.exit(1);
@@ -287,17 +270,12 @@ public class BAPT extends AbstractPlanner {
 
             int factSize = problem.getFluents().size();
             Action[] actions = new Action[current_step];
-            //réalisation du plan a partir de la solution rendu par le SAT solver
             for (int variable : ip.model()) {
-                //traduction la variable pour obtenir le bitnum et l'etape
                 int[] resDecoded = unpair(variable);
                 int bitnum = resDecoded[0];
                 int step = resDecoded[1];
-                // si le bitnum est plus grand que le nombre de fait alors c'est une action
                 if (bitnum > factSize) {
-                    //on récupere l'encodage de l'action
                     Action action = problem.getActions().get(bitnum - factSize - 1);
-                    //on la sauvegarde dans l'ordre grace a son étape
                     actions[step - 1] = action;
                 }
             }
@@ -310,145 +288,6 @@ public class BAPT extends AbstractPlanner {
             return plan;
         }
     }
-
-
-    public int encryptageAction(Action action){
-
-        if (!tabActionFluent.contains(action.getConditionalEffects().get(0).getEffect().toString()))
-        {
-            tabActionFluent.add(action.getConditionalEffects().get(0).getEffect().toString());
-            indexActionFluent.add(numeroEncryptage);
-            numeroEncryptage++;
-        }
-
-        return numeroEncryptage;
-    }
-
-    public int encryptageFluent(Fluent fluent){
-
-        if (!tabActionFluent.contains(fluent.toString()))
-        {
-            tabActionFluent.add(fluent.toString());
-            indexActionFluent.add(numeroEncryptage);
-            numeroEncryptage++;
-        }
-
-        return numeroEncryptage;
-
-    }
-
-    /**
-     * Search a solution plan for a planning problem using an A* search strategy.
-     *
-     * @param problem the problem to solve.
-     * @return a plan solution for the problem or null if there is no solution
-     */
-    public Plan astar(Problem problem) {
-
-        // First we create an instance of the heuristic to use to guide the search
-        final StateHeuristic heuristic = StateHeuristic.getInstance(this.getHeuristic(), problem);
-
-        // We get the initial state from the planning problem
-        final State init = new State(problem.getInitialState());
-
-        // We initialize the closed list of nodes (store the nodes explored)
-        final Set<fr.uga.pddl4j.planners.statespace.search.Node> close = new HashSet<>();
-
-        // We initialize the opened list to store the pending node according to function f
-        final double weight = this.getHeuristicWeight();
-        final PriorityQueue<fr.uga.pddl4j.planners.statespace.search.Node> open = new PriorityQueue<>(100, new Comparator<fr.uga.pddl4j.planners.statespace.search.Node>() {
-            public int compare(fr.uga.pddl4j.planners.statespace.search.Node n1, fr.uga.pddl4j.planners.statespace.search.Node n2) {
-                double f1 = weight * n1.getHeuristic() + n1.getCost();
-                double f2 = weight * n2.getHeuristic() + n2.getCost();
-                return Double.compare(f1, f2);
-            }
-        });
-
-        // We create the root node of the tree search
-        final fr.uga.pddl4j.planners.statespace.search.Node root = new fr.uga.pddl4j.planners.statespace.search.Node(init, null, -1, 0, heuristic.estimate(init, problem.getGoal()));
-
-        // We add the root to the list of pending nodes
-        open.add(root);
-        Plan plan = null;
-
-        // We set the timeout in ms allocated to the search
-        final int timeout = this.getTimeout() * 1000;
-        long time = 0;
-
-        // We start the search
-        while (!open.isEmpty() && plan == null && time < timeout) {
-
-            // We pop the first node in the pending list open
-            final fr.uga.pddl4j.planners.statespace.search.Node current = open.poll();
-            close.add(current);
-
-            // If the goal is satisfied in the current node then extract the search and return it
-            if (current.satisfy(problem.getGoal())) {
-                return this.extractPlan(current, problem);
-            } else { // Else we try to apply the actions of the problem to the current node
-                for (int i = 0; i < problem.getActions().size(); i++) {
-                    // We get the actions of the problem
-                    Action a = problem.getActions().get(i);
-                    // If the action is applicable in the current node
-                    if (a.isApplicable(current)) {
-                        fr.uga.pddl4j.planners.statespace.search.Node next = new fr.uga.pddl4j.planners.statespace.search.Node(current);
-                        // We apply the effect of the action
-                        final List<ConditionalEffect> effects = a.getConditionalEffects();
-                        for (ConditionalEffect ce : effects) {
-                            if (current.satisfy(ce.getCondition())) {
-                                next.apply(ce.getEffect());
-                            }
-                        }
-                        // We set the new child node information
-                        final double g = current.getCost() + 1;
-                        if (!close.contains(next)) {
-                            next.setCost(g);
-                            next.setParent(current);
-                            next.setAction(i);
-                            next.setHeuristic(heuristic.estimate(next, problem.getGoal()));
-                            open.add(next);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Finally, we return the search computed or null if no search was found
-        return plan;
-    }
-
-    /**
-     * Extracts a search from a specified node.
-     *
-     * @param node    the node.
-     * @param problem the problem.
-     * @return the search extracted from the specified node.
-     */
-    private Plan extractPlan(final fr.uga.pddl4j.planners.statespace.search.Node node, final Problem problem) {
-        Node n = node;
-        final Plan plan = new SequentialPlan();
-        while (n.getAction() != -1) {
-            final Action a = problem.getActions().get(n.getAction());
-            plan.add(0, a);
-            n = n.getParent();
-        }
-        return plan;
-    }
-
-//    /**
-//     * The main method of the <code>ASP</code> planner.
-//     *
-//     * @param args the arguments of the command line.
-//     */
-//    public static void main(String[] args) {
-//        try {
-//            final ASP planner = new ASP();
-//            CommandLine cmd = new CommandLine(planner);
-//            cmd.execute(args);
-//        } catch (IllegalArgumentException e) {
-//            LOGGER.fatal(e.getMessage());
-//        }
-//    }
 
 
     public static void main(String[] args) {
