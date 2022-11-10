@@ -10,44 +10,31 @@ import java.util.*;
 
 public final class Encoder {
 
-    /*
-     * A SAT problem in dimacs format is a list of int list a.k.a clauses
-     */
+
     private final List<int[]> dimacs;
 
-    //map pour sauvegarder les transitions des actions entre 2 étapes
     private HashMap<Integer, ArrayList<Integer>> transitions;
 
-    // Goal to achieve
     private final State goal;
 
-    // Relevant Facts
     private final List<Fluent> facts;
-    //le Coded Problem
     private final Problem problem;
 
-    /*
-     * Current number of steps of the SAT encoding
-     */
+
     private int steps;
 
-    /**
-     *
-     * @param
-     */
+
     public Encoder(final Problem problem, final int steps) {
         dimacs = new ArrayList<>();
         this.steps = steps;
         this.problem = problem;
-        // We get the GOAL and Relevant Facts
         goal = new State(problem.getGoal());
         facts = problem.getFluents();
 
-        // Encoding of init in step 1
-        // Each fact is a unit clause
+
         final State init = new State(problem.getInitialState());
         for (int i = 0; i < facts.size(); i++) {
-            int actionEncode = pair(i, 1);  //Encodage
+            int actionEncode = pair(i, 1);
             if (init.get(i)) {
                 dimacs.add(new int[]{actionEncode});
             } else {
@@ -55,13 +42,11 @@ public final class Encoder {
             }
         }
 
-        //generation des clauses pour les étapes qu'on veut "sauter" au debut
         for (int i = 1; i < steps; i++) {
             next();
         }
     }
 
-    // To get the list of goal clauses
     private List<int[]> getGoal() {
         List<int[]> list = new ArrayList<>();
         for (int i = 0; i < facts.size(); i++) {
@@ -74,16 +59,11 @@ public final class Encoder {
         return list;
     }
 
-    /**
-     * Add a clause to dimacs List
-     */
+
     private void addClause(int[] clauseTab) {
         dimacs.add(clauseTab);
     }
 
-    /**
-     * To add the coded actions with the current step
-     */
     public List<int[]> next() {
         transitions = new HashMap<>();
         for (int i = 0; i < problem.getActions().size(); i++) {
@@ -92,7 +72,6 @@ public final class Encoder {
 
         addTransitionsToDimacs();
 
-        // Return the result of the current step
         List<int[]> res = new ArrayList<>(dimacs);
         res.addAll(getGoal());
         steps++;
@@ -100,11 +79,7 @@ public final class Encoder {
     }
 
 
-    /**
-     * ajoute les clause en lien avec l'action a Dimac
-     *
-     * @param actionIndex le bit qui encode l'action
-     */
+
     private void addAction(int actionIndex) {
         final Action action = problem.getActions().get(actionIndex);
         final BitVector precond = action.getPrecondition().getPositiveFluents();
@@ -113,7 +88,6 @@ public final class Encoder {
 
         int code_op = pair(actionIndex + facts.size(), steps);
 
-        //genere les clauses de disjonction (pour eviter de faire 2 actions pour une étape)
         for (int i = actionIndex + 1; i < problem.getActions().size(); i++) {
             int code_other_op = pair(i + facts.size(), steps);
             int[] clause = new int[2];
@@ -122,10 +96,8 @@ public final class Encoder {
             addClause(clause);
         }
 
-        //genere les clause qui encode l'action
         for (int i = 0; i < facts.size(); i++) {
 
-            //genere les clauses pour les préconditions de l'action à l'etape courante
             if (precond.get(i)) {
                 int[] clause = new int[2];
                 clause[0] = -code_op;
@@ -133,7 +105,6 @@ public final class Encoder {
                 addClause(clause);
             }
 
-            //genere les clause pour les effets positifs qu'elle entraine à l'etape +1
             if (positive.get(i)) {
                 int[] clause = new int[2];
                 clause[0] = -code_op;
@@ -143,7 +114,6 @@ public final class Encoder {
                 transitions.putIfAbsent(i, new ArrayList<>());
                 transitions.get(i).add(code_op);
             }
-            //genere les clause pour les effets négatif qu'elle entraine à l'etape +1
             if (negative.get(i)) {
                 int[] clause = new int[2];
                 clause[0] = -code_op;
@@ -156,9 +126,7 @@ public final class Encoder {
         }
     }
 
-    /**
-     * genere et ajoute à dimac les clauses de transition à partir de la map de transition
-     */
+
     private void addTransitionsToDimacs() {
         for (Map.Entry<Integer, ArrayList<Integer>> operations_fi : transitions.entrySet()) {
             ArrayList<Integer> clause = operations_fi.getValue();
@@ -171,7 +139,6 @@ public final class Encoder {
                 clause.add(-pair(-operations_fi.getKey(), steps));
                 clause.add(pair(-operations_fi.getKey(), steps + 1));
             }
-            //Transform to table of int then ADD to dimacs
             int[] clauseTab = new int[clause.size()];
             for (int i=0; i<clause.size();i++) {
                 clauseTab[i] = clause.get(i);
@@ -206,11 +173,7 @@ public final class Encoder {
         return new int[]{x,y};
     }
 
-    /**
-     * affiche les clauses de la liste
-     *
-     * @param clauses la liste a afficher
-     */
+
     public void showClause(List<int[]> clauses) {
         for (int[] clause : clauses) {
             System.out.print("[ ");
@@ -221,11 +184,7 @@ public final class Encoder {
         }
     }
 
-    /**
-     * affiche les clauses de la liste en decodant leurs couplages
-     *
-     * @param clauses la liste à afficher
-     */
+
     public void showUnpairing(List<int[]> clauses) {
         for (int[] clause : clauses) {
             for (int variable : clause) {
