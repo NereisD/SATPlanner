@@ -1,0 +1,29 @@
+1
+                  0,10 seconds total time
+2
+                  0,10 seconds total time
+3
+                  0,11 seconds total time
+4
+                  0,13 seconds total time
+5
+                  0,12 seconds total time
+6
+                  0,09 seconds total time
+7
+                  0,13 seconds total time
+8
+                  0,09 seconds total time
+9
+                  0,12 seconds total time
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
