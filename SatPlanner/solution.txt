@@ -1,0 +1,64 @@
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+
+parsing domain file "domain.pddl" done successfully
+parsing problem file "p010.pddl" done successfully
+# WARNING: Unable to get Instrumentation. Dynamic Attach failed. You may add this JAR as -javaagent manually, or supply -Djdk.attach.allowAttachSelf
+# WARNING: Unable to attach Serviceability Agent. sun.jvm.hotspot.memory.Universe.getNarrowOopBase()
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.openjdk.jol.util.ObjectUtils (file:/C:/Users/dugal/.m2/repository/fr/uga/pddl4j/4.0.0/pddl4j-4.0.0.jar) to field java.util.ArrayList.elementData
+WARNING: Please consider reporting this to the maintainers of org.openjdk.jol.util.ObjectUtils
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+problem instantiation done successfully (112 actions, 71 fluents)
+
+* Starting MoteCarlo search 
+* MonteCarlo search succeeded
+
+found plan as follows:
+
+00: (unstack e g) [0]
+01: (  stack e g) [0]
+02: (unstack e g) [0]
+03: ( put-down e) [0]
+04: (unstack g b) [0]
+05: ( put-down g) [0]
+06: (unstack b a) [0]
+07: (  stack b g) [0]
+08: (unstack a f) [0]
+09: (  stack a b) [0]
+10: (unstack f c) [0]
+11: (  stack f e) [0]
+12: (unstack c d) [0]
+13: (  stack c a) [0]
+14: (unstack c a) [0]
+15: (  stack c f) [0]
+16: (unstack a b) [0]
+17: (  stack a b) [0]
+18: (unstack a b) [0]
+19: ( put-down a) [0]
+20: (unstack b g) [0]
+21: (  stack b c) [0]
+22: (  pick-up d) [0]
+23: (  stack d b) [0]
+24: (  pick-up a) [0]
+25: (  stack a d) [0]
+26: (unstack a d) [0]
+27: (  stack a d) [0]
+28: (unstack a d) [0]
+29: ( put-down a) [0]
+30: (  pick-up g) [0]
+31: (  stack g d) [0]
+32: (  pick-up a) [0]
+33: (  stack a g) [0]
+
+time spent:       0,27 seconds parsing 
+                  0,06 seconds encoding 
+                145,78 seconds searching
+                146,12 seconds total time
+
+memory used:      0,45 MBytes for problem representation
+                  0,00 MBytes for searching
+                  0,45 MBytes total
+
+

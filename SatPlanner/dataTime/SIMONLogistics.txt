@@ -1,0 +1,27 @@
+1
+                  0,13 seconds total time
+	 10 actions
+2
+                  0,10 seconds total time
+	 30 actions
+3
+                  0,07 seconds total time
+	 28 actions
+4
+                  0,14 seconds total time
+	 34 actions
+5
+                  0,08 seconds total time
+	 16 actions
+6
+                  0,44 seconds total time
+	 38 actions
+7
+                  0,23 seconds total time
+	 28 actions
+8
+                  0,08 seconds total time
+	 34 actions
+9
+                  39,65 seconds total time
+	 38 acitons

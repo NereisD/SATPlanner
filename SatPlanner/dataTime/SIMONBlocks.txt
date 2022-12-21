@@ -1,0 +1,36 @@
+1
+                  0,07 seconds total time
+	  13 actions
+2
+                  0,09 seconds total time
+                  29 actions
+3
+                  0,09 seconds total time
+	  28 actions
+4
+                  0,11 seconds total time
+	 34 actions
+5
+                  0,14 seconds total time
+	 32 actions
+6
+                  0,16 seconds total time
+	 38 actions
+7
+                  0,48 seconds total time
+	 30 actions
+8
+                  0,68 seconds total time
+	 36 actions
+9
+                  50,54 seconds total time
+	 38 actions
+10
+                  150,41 seconds total time
+	  34 actions
+11
+                  18.41 seconds total time
+	  34 actions
+12
+                  8,64 seconds total time
+	 34 actions
