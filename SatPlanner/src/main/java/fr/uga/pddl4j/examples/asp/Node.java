@@ -35,6 +35,8 @@ public final class Node extends State {
      */
     private int depth;
 
+
+    private boolean deadEnd;
     /**
      * Creates a new node from a specified state.
      *
@@ -111,6 +113,15 @@ public final class Node extends State {
     }
 
     /**
+     * setfvyvyhbhb
+     *
+     * @param _val
+     */
+    public final void setDeadEnd(boolean _val){
+        this.deadEnd = _val;
+    }
+
+    /**
      * Sets the parent node of the node.
      *
      * @param parent the parent to set.
@@ -118,6 +129,8 @@ public final class Node extends State {
     public final void setParent(Node parent) {
         this.parent = parent;
     }
+
+
 
     /**
      * Returns the cost to reach the node from the root node.

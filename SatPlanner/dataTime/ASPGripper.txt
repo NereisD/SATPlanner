@@ -1,12 +1,10 @@
 1
-                  0,07 seconds total time
+                  0,28 seconds total time
+	 9 actions
 2
-                  0,13 seconds total time
+                  32,43 seconds total time
+	 13 actions 
 3
                   0,40 seconds total time
-4
-                  1,44 seconds total time
-5
-                  8,50 seconds total time
-6
-                 72,67 seconds total time
+	  actions
+

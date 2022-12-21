@@ -234,7 +234,6 @@ public class BAPT extends AbstractPlanner {
             final int timeout = 1000;
             int MAXVAR = 50000;
             int NBCLAUSES = 100000;
-            
             int max_step = 10000;
             int current_step = 1;
             Encoder encoder = new Encoder(problem, current_step);

@@ -252,6 +252,7 @@ public class ASP extends AbstractPlanner {
      */
     public Plan astar(Problem problem) {
 
+
         // First we create an instance of the heuristic to use to guide the search
         final StateHeuristic heuristic = StateHeuristic.getInstance(this.getHeuristic(), problem);
 

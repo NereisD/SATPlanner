@@ -1,26 +1,39 @@
 1
-                  0,05 seconds total time
+                  0,07 seconds total time
+	  6 actions
 2
-                  0,05 seconds total time
+                  0,07 seconds total time
+	 10 actions
 3
-                  0,06 seconds total time
+                  0,08 seconds total time
+	  6 actions
 4
-                  0,06 seconds total time
+                  0,08 seconds total time
+	 12 actions
 5
-                  0,06 seconds total time
+                  0,08 seconds total time
+	 10 actions
 6
-                  0,08 seconds total time
+                  0,09 seconds total time
+	 16 actions
 7
-                  0,08 seconds total time
+                  0,09 seconds total time
+	  12 actions
 8
-                  0,06 seconds total time
+                  0,09 seconds total time
+  	  10 actions
 9
-                  0,06 seconds total time
+                  0,16 seconds total time
+	 22 actions
 10
-                  0,07 seconds total time
+	  0,21 seconds total time
+	  22 actions
 11
-                  0,07 seconds total time
+	  0,34 seconds total time
+	  22 actions
 12
-                  0,07 seconds total time
+	  0,12 seconds total time
+	  20 actions
 13
-                  0,08 seconds total time
+	  0,13 seconds total time
+	  18 actions
