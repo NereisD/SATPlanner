@@ -50,8 +50,7 @@ Même problème pour ce domaine avec le temps d'execution de SIMON pour le derni
   <img src="./SatPlanner/data_stats/data_stats/graph/action_ASP_SIM_Gripper.png" width="49%" />
 </p>
 <p>
-Les résultats sur Gripper sont anormaux ASP
-NORMAL QUE ASP soit a 30sec sur le 2 ???? possible de refaire ???
+Les résultats sur Gripper sont anormaux pour ASP on peut voir un temps d'exécution bien plus élevé que la moyenne pour le problème numéro 2. Malgré plusieurs tentatives, nous n'avons pas réussi à obtenir un temps beaucoup plus faible.
 </p>
 
 
