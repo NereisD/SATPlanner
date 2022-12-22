@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ASP" />
-        <module name="SatPlanner" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SatPlanner" target="15" />
+    </bytecodeTargetLevel>
   </component>
 </project>
