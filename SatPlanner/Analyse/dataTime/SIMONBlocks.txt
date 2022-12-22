@@ -1,0 +1,32 @@
+1
+                  0,07 seconds 
+	  13 action
+2
+                  0,09 seconds 
+                  29 action
+3
+                  0,09 seconds 
+	  28 action
+4
+                  0,11 seconds 
+	 34 action
+5
+                  0,14 seconds 
+	 32 action
+6
+                  0,16 seconds 
+	 38 action
+7
+                  0,48 seconds 
+	 30 action
+8
+                  0,68 seconds 
+	 36 action
+9
+	 38 action
+10
+	  34 action
+11
+	  34 action
+12
+	 34 action
